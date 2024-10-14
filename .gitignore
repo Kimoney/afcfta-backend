@@ -1,0 +1,11 @@
+# Virtual environment
+env/
+.venv/
+
+# Migration
+/migrations/
+# /instance/
+
+# Python cache files
+__pycache__/
+*.pyc
