@@ -15,7 +15,7 @@ def seed_data_from_excel():
             data = pd.read_excel(excel_file_path, sheet_name=sheet)
 
             # Create tables if they don't exist
-            db.create_all()
+            # db.create_all()
 
             # Step 1: Seed Years (2014 - 2024)
             for year in range(2014, 2025):
@@ -33,10 +33,15 @@ def seed_data_from_excel():
                     country = Country(code=country_code, name=country_name)
                     db.session.add(country)
                     db.session.commit()  # Commit to get country.id
+                    print('Country created successfully in if statement')
+                print('Country created successfully on same scope as if statement')
                 
                 # Get or create Indicator
                 indicator_name = row["Indicator Name"]  # Adjust as needed
+                print(f'Indicator is {indicator_name}')
                 indicator = Indicator.query.filter_by(name=indicator_name).first()
+                print(f'Indicator is {indicator}')
+                
                 if not indicator:
                     indicator = Indicator(name=indicator_name)
                     db.session.add(indicator)
@@ -46,6 +51,8 @@ def seed_data_from_excel():
                 for year in range(2014, 2025):
                     year_entry = Year.query.filter_by(year=year).first()
                     value_column = str(year)  # Each year is a column name
+                    
+                    print(f"{value_column} is {year}")
 
                     # Ensure value exists in the column (not NaN)
                     if pd.notna(row[value_column]):
@@ -67,6 +74,7 @@ def seed_data_from_excel():
 
             # Commit all IndicatorValues for this sheet
             db.session.commit()
+            print('Committed all IndicatorValues for this sheet')
 
         print("Database seeded successfully from Excel file!")
 
